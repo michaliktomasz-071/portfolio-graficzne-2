@@ -1,20 +1,20 @@
-# PRD — Portfolio graficzne (Tomasz Michalik)
+# PRD — Portfolio graficzne 2 (Tomasz Michalik)
 
-**Dokument wymagań produktowych** · wersja 1.1 · status: w realizacji (uzupełnianie podstron)
-Repo: https://github.com/michaliktomasz-071/portfolio-graficzne · Live: https://tm-portfolio-graficzne-2026.vercel.app/
+**Dokument wymagań produktowych** · wersja 2.0 · status: live (uzupełnianie projektów)
+Repo: https://github.com/michaliktomasz-071/portfolio-graficzne-2 · Live: https://portfolio-graficzne-2.vercel.app/
 
-> Projekt jest **osobną kopią** portfolio UI/UX (repo `portfolio`) postawioną pod własną
-> domeną. Wspólny szkielet i układ, odrębna identyfikacja kolorystyczna i pozycjonowanie.
+> Projekt jest **klonem** `portfolio-graficzne` (które samo jest kopią portfolio UI/UX, repo
+> `portfolio`). Wspólny szkielet i układ; odrębne repo, własny adres na Vercelu i własny zestaw
+> projektów. Służy jako niezależna odsłona portfolio graficznego, rozwijana osobno.
 
 ---
 
 ## 1. Cel produktu
 
-Statyczna strona **portfolio** Tomasza Michalika, prezentująca ofertę hasłem:
-**„Projektuję estetyczne i skuteczne rozwiązania wizualne dla firm i przedsiębiorców."**
-Ma pokazywać wybrane prace w atrakcyjny, „surowy" wizualnie sposób, z naciskiem na
-**interaktywność i animacje**, oraz umożliwiać szybki kontakt. Strona jest wizytówką —
-prosta w utrzymaniu, edytowalna bezpośrednio w kodzie.
+Statyczna strona **portfolio** Tomasza Michalika, prezentująca realizacje z zakresu grafiki,
+brandingu, digitalu i druku. Ma pokazywać wybrane prace w atrakcyjny, „surowy" wizualnie sposób,
+z naciskiem na **interaktywność i animacje**, oraz umożliwiać szybki kontakt i przejście do stron
+klientów. Strona jest wizytówką — prosta w utrzymaniu, edytowalna bezpośrednio w kodzie.
 
 ## 2. Założenia i ograniczenia
 
@@ -23,9 +23,10 @@ prosta w utrzymaniu, edytowalna bezpośrednio w kodzie.
 - **Bez build-stepu i frameworka** — czysty HTML + CSS + JavaScript (maszyna autora nie ma
   Node.js/npm). Pierwsze załadowanie wymaga internetu (fonty z Google Fonts; potem cache).
 - **Dwujęzyczność** PL / EN.
-- **Hosting:** GitHub (źródło) → Vercel (auto-deploy po `git push`), **osobna domena**.
+- **Hosting:** GitHub (źródło) → Vercel (auto-deploy po `git push`), własny adres.
 - **Estetyka:** minimalizm, „surowy" charakter — **brak zaokrągleń**, jasny błękitno-szary
   panel, delikatna siatka „papier milimetrowy", font Plus Jakarta Sans, dużo whitespace'u.
+- **Źródła graficzne poza repo:** pliki `*.psd` i robocze są w `.gitignore` (nie trafiają na web).
 
 ## 3. Stos technologiczny
 
@@ -37,7 +38,7 @@ prosta w utrzymaniu, edytowalna bezpośrednio w kodzie.
 | Typografia | Plus Jakarta Sans (Google Fonts) |
 | Hosting | Vercel (statyczny), `vercel.json` → `cleanUrls` |
 | Podgląd lokalny | `serve.ps1` (serwer statyczny w PowerShell, **port 4323**) |
-| Wersjonowanie | Git/GitHub; `.gitattributes` chroni pliki binarne |
+| Wersjonowanie | Git/GitHub; `.gitattributes` chroni pliki binarne; `.gitignore` wyklucza `*.psd` |
 
 ## 4. Architektura informacji
 
@@ -50,117 +51,132 @@ prosta w utrzymaniu, edytowalna bezpośrednio w kodzie.
 | `kontakt.html` / `kontakt-en.html` | Kontakt / Contact | PL/EN |
 
 Wspólne zasoby: `css/styles.css`, `js/main.js`, `js/projects.js`, `favicon.svg`,
-`images/`, `grafiki/`, `assets/`.
+`images/<projekt>/`, `assets/`.
 
 ## 5. System projektowy (design system)
 
-- **Kolory** jako zmienne CSS w `:root`: `--bg` (biały #ffffff), `--green` (**#D7DCE5** —
-  kolor panelu strony głównej; zmienna zachowała historyczną nazwę, ale trzyma błękitno-szary),
-  `--fg` (#333), `--muted`, `--line`, `--card`, `--bg-soft`. Zmiana motywu = jedna zmienna.
-- **Siatka tła** („papier milimetrowy"): linie/kropki w kolorze **#F0F5FF** na **białym** tle
-  (`body.home / .project / .about`), 24 px raster; na panelu dodatkowo biała siatka
-  odsłaniana pod kursorem (ślad z bezwładnością).
-- **`--frame: 48px`** — ramka dookoła panelu (na wszystkich widokach).
-- **`--radius: 0`** — brak zaokrągleń (surowy charakter), dotyczy też przycisków i tagów.
-- **Układ bazowy (wszystkie widoki):** pełny ekran (`100svh`), ramka 48 px,
-  **panel po lewej** (przyklejony) + **treść po prawej** (przewija się tylko prawa kolumna).
-  Na mobile (≤ 860 px) układ przechodzi w jedną kolumnę i normalne przewijanie.
+- **Kolory** jako zmienne CSS w `:root`: `--bg`, `--green` (**#D7DCE5** — kolor panelu; nazwa
+  historyczna, trzyma błękitno-szary), `--fg`, `--muted`, `--line`, `--card`, `--page`.
+  Zmiana motywu = jedna zmienna.
+- **Siatka tła** („papier milimetrowy"): subtelne linie/kropki na białym tle; na panelu
+  dodatkowo biała siatka odsłaniana pod kursorem (ślad z bezwładnością).
+- **Brak zaokrągleń** (surowy charakter) — dotyczy też przycisków i tagów.
+- **Układ bazowy (wszystkie widoki):** pełny ekran, ramka dookoła, **panel po lewej**
+  (przyklejony) + **treść po prawej** (przewija się tylko prawa kolumna). Na mobile (≤ 860 px)
+  układ przechodzi w jedną kolumnę i normalne przewijanie.
 - **Font:** Plus Jakarta Sans (wagi 300–800).
 
 ## 6. Funkcjonalności
 
 ### 6.1 Strona główna (`index.html` / `index-en.html`)
-- Lewy panel: **ikony narzędzi** w kolejności **Adobe → Figma → SketchUp → V-Ray → Claude**,
-  **przełącznik języka** („Portfolio 2026 EN/PL" z animowaną kreską na hover), „Tomasz Michalik",
-  podpis **„Projektuję estetyczne i skuteczne rozwiązania wizualne dla firm i przedsiębiorców."**,
-  na dole nawigacja **O mnie / Kontakt / Pobierz CV**.
+- Lewy panel: **ikony narzędzi** (Adobe → Figma → SketchUp → Claude), **przełącznik języka**,
+  „Tomasz Michalik", krótki wstęp, na dole nawigacja **O mnie / Kontakt / Pobierz CV**.
 - Prawa kolumna: **pionowa galeria kafelków** prac (przewijana wewnątrz).
-- Kafelek: domyślnie **czarno-biały → kolor na hover**, podgląd opisu + przycisk
-  **„Zobacz więcej"**; klik → dedykowana podstrona projektu. Na mobile kafelki od razu w kolorze.
+- Kafelek: miniatura + tytuł + podpis (tag) + **„Zobacz więcej"**; klik → podstrona projektu
+  (`praca.html?id=N`). Jeden kafelek jest linkiem zewnętrznym do portfolio UI/UX.
 
 ### 6.2 Podstrona projektu (`praca.html`)
-- Lewy panel jako **spis treści projektu**: nawigacja między projektami (poprzednia / następna),
-  „Tomasz Michalik" (link do home), **nazwa projektu**, krótki opis, oraz **menu kategorii**
-  (kotwice) dociągnięte do dołu panelu.
-- Klik kategorii → **płynne przewinięcie** prawej kolumny + **podświetlenie aktywnej**
-  (IntersectionObserver).
-- Prawa kolumna: **cover** + sekcje (placeholdery pod treść/grafiki).
-- **Mockup urządzenia** (laptop — wektorowy, HTML/CSS) jako cover, z opcjonalnym **slideshow**
-  ekranów (crossfade, auto-zmiana co ~3,5 s, kropki, pauza na hover). Konfiguracja w
-  `projects.js`: `device: "laptop"`, `screens: [...]`.
+- Lewy panel jako **spis treści projektu**: nawigacja poprzednia/następna, „Tomasz Michalik"
+  (link do home), **nazwa projektu**, opis, opcjonalny **aktywny link do strony klienta**
+  (pole `link` → odnośnik `.ps-link`, otwiera się w nowym oknie) i **menu kategorii** (kotwice).
+- Dwa tryby renderowania (zależnie od danych w `projects.js`):
+  - **Tryb galerii** (pole `gallery`): siatka grafik z układem per-projekt
+    (`layout` → klasa `.proj-gallery--<layout>`). Komórki kwadratowe (wysokość = szerokość
+    kolumny, liczona w JS) — chyba że układ sam definiuje proporcje (np. `salon`).
+  - **Tryb cover+sekcje** (brak `gallery`): **mockup urządzenia** (laptop/telefon, HTML/CSS)
+    z opcjonalnym **slideshow** ekranów + sekcje kategorii (placeholdery pod treść).
+- **Film w galerii:** element `gallery` z rozszerzeniem `.mp4/.webm/.mov/.m4v` renderuje się
+  jako `<video>` w **szarym boxie** (`.gal-video`, `object-fit: contain` — klip pod social media
+  bez przycinania, z szarymi marginesami). Autoodtwarzanie, wyciszony, w pętli, `playsinline`,
+  z kontrolkami. Gdy pliku brak — box pokazuje etykietę „Film — wkrótce" (obsłużony błąd).
 
-### 6.3 O mnie (`o-mnie.html` / `o-mnie-en.html`)
-- Lewy panel: menu (Start / Kontakt), „Tomasz Michalik", **tagi umiejętności**, **fakty**
-  (lata doświadczenia / projekty / klienci) dociągnięte do dołu.
-- Prawa kolumna: **zdjęcie + opis** (bio).
+### 6.3 O mnie / Kontakt
+- `o-mnie.*`: lewy panel (menu, tagi umiejętności, fakty) + prawa kolumna (zdjęcie + bio).
+- `kontakt.*`: lewy panel (menu, lista kontaktowa) + prawa kolumna (opis + duże CTA e-mail).
 
-### 6.4 Kontakt (`kontakt.html` / `kontakt-en.html`)
-- Lewy panel: menu (Start / O mnie), nagłówek, **lista kontaktowa** (e-mail, LinkedIn,
-  Behance, Dribbble), notka o czasie odpowiedzi.
-- Prawa kolumna: opis + **duże CTA** z adresem e-mail.
+### 6.4 Komponenty i efekty współdzielone
+- Przełącznik języka PL ↔ EN; reflektor/siatka pod kursorem; animacje wejścia i scroll-reveal;
+  mockup urządzenia + slideshow; **box filmu** (`.gal-video`); **aktywny link projektu**
+  (`.ps-link`). Wszystkie efekty respektują **`prefers-reduced-motion`**.
 
-### 6.5 Komponenty i efekty współdzielone
-- **Przełącznik języka** PL ↔ EN (na home; na podstronach przez parametr/linki).
-- **Reflektor / siatka pod kursorem** — efekt podążający za myszką na panelach
-  (`--mx`/`--my`, throttling `rAF`).
-- **Animacje wejścia** (fade-up) i **scroll-reveal** sekcji.
-- **Mockup urządzenia** (laptop) + **slideshow** — komponent reużywalny.
-- Wszystkie efekty respektują **`prefers-reduced-motion`**.
+## 7. Projekty (dane w `js/projects.js`)
 
-## 7. Dwujęzyczność (PL / EN)
+Każdy projekt: `id`, `img` (miniatura), `year`, `layout`, `gallery[]` lub tryb cover,
+dwujęzyczne `title/tag/role/klient/desc` (+ `*_en`), opcjonalnie `link` + `linkLabel(_en)`.
+
+| id | Projekt | Tag | Tryb / układ | Uwagi |
+|---|---|---|---|---|
+| 1 | ruminta | Identyfikacja wizualna | galeria `ruminta` | 14 grafik |
+| 2 | trans.eu | Materiały targowe i DTP | galeria `trans` | 12 kafli + baner |
+| 3 | PITD | Raporty i publikacje | galeria `pitd` | 15 grafik |
+| 4 | ~~Gray Lama~~ | — | — | **UKRYTY** (zakomentowany w `projects.js`, brak kafelka) |
+| 7 | **malamut** | Social media i film AI | galeria `malamut` (6 el.) | **film** w boxie #4; klej polimerowy |
+| 8 | **salon masażu** | Identyfikacja i strona www | galeria `salon` | **link** do masazbartoszburcon.pl |
+| 5 | VetAnima | Identyfikacja i opakowania | galeria `vetanima` | 12 grafik |
+| 6 | Logotypy | Projektowanie logo | galeria `logo` (bento) | kafel ikona→logo na hover |
+
+- **malamut** — kampania social media kleju polimerowego: film reklamowy (narzędzia AI) +
+  posty/grafiki. Układ 6 kafli (jak początek `trans`): #1/#2 w słupku, #3 i film (#4) jako duże
+  pola 2×2, #5/#6 mniejsze.
+- **salon masażu** — identyfikacja studia masażu Bartosz Burcon: logo, materiały drukowane,
+  strona www (przygotowana z użyciem AI). Układ: #1 (logo) + #2 (voucher) + #7 (ulotki) jako
+  małe kwadraty w lewej kolumnie; sekcje strony www (#3–#5) jako jednolita kolumna dociągnięta
+  do prawej krawędzi. Aktywny link „Zobacz stronę ↗".
+
+## 8. Dwujęzyczność (PL / EN)
 
 - Osobne pliki dla stron statycznych (`*-en.html`).
-- Podstrony projektów: **jeden szablon** `praca.html` + parametr `?lang=en`; teksty z pól
-  `*_en` w `projects.js`; kategorie tłumaczone w skrypcie strony.
-- Przełącznik na stronie głównej; na podstronach linki prowadzą do właściwej wersji językowej.
+- Podstrony projektów: **jeden szablon** `praca.html` + parametr `?lang=en`; teksty z pól `*_en`
+  w `projects.js` (w tym `linkLabel_en`); kategorie tłumaczone w skrypcie strony.
 
-## 8. Treści i zasoby (stan: placeholdery → w trakcie podmiany)
+## 9. Zasoby graficzne
 
-- `images/projects/…` — atrapy kafelków (do podmiany na realne grafiki prac).
-- `images/projects/portret.svg` — atrapa zdjęcia (O mnie).
-- `grafiki/` — realne screeny prac (sukcesywnie dodawane).
-- `assets/cv.pdf` — placeholder CV (do podmiany).
-- Dane kontaktowe i linki social — placeholdery (`hello@example.com`, `#`).
+- `images/<projekt>/` — miniatura + grafiki galerii (np. `images/malamut/`, `images/salon-masazu/`).
+- Film: `images/malamut/4.mp4` (klip pionowy 9:16, ~30 MB — kandydat do kompresji).
+- Źródła `*.psd` i pliki robocze: w `.gitignore`, nie publikowane.
+- `assets/` — CV (`CV Tomasz Michalik.pdf`).
 
-## 9. Dostępność i wydajność
+## 10. Dostępność i wydajność
 
 - Semantyczny HTML, `aria-label`, alternatywne teksty obrazów.
-- Respektowanie `prefers-reduced-motion` (wyłączenie animacji/efektów).
-- Brak ciężkich zależności; grafiki wektorowe tam, gdzie to możliwe; `loading="lazy"`.
+- Respektowanie `prefers-reduced-motion`.
+- `loading="lazy"` dla grafik; wektory tam, gdzie możliwe.
 - Mobile-first fallback (układ jednokolumnowy ≤ 860 px).
+- **Uwaga wydajnościowa:** `4.mp4` (~30 MB) — warto skompresować dla szybszego ładowania.
 
-## 10. Hosting i wdrożenie
+## 11. Hosting i wdrożenie
 
-- Repozytorium GitHub (prywatne) `portfolio-graficzne` → Vercel (import, framework „Other", katalog `/`).
-- **Każdy `git push` = automatyczny re-deploy.**
+- Repo GitHub (publiczne) `portfolio-graficzne-2` → Vercel (framework „Other", katalog `/`).
+- **Każdy `git push` do `main` = automatyczny re-deploy.**
 - `vercel.json` → `cleanUrls` (adresy bez `.html`).
-- **Osobna domena** (inna niż oryginalne portfolio) — podpięta w Settings → Domains.
+- Live: https://portfolio-graficzne-2.vercel.app/ (opcjonalnie: własna domena w Settings → Domains).
 
-## 11. Status — co już działa
+## 12. Status — co już działa
 
-✅ Osobne repo + wdrożenie na Vercel (auto-deploy) pod własną domeną
-✅ Komplet widoków (Start, Projekt, O mnie, Kontakt) w PL i EN ze spójnym układem
-✅ Nowa identyfikacja kolorystyczna: panel `#D7DCE5`, siatka `#F0F5FF` na białym tle
-✅ Ikony narzędzi (Adobe → Figma → SketchUp → V-Ray → Claude) i nowy tagline
+✅ Osobne publiczne repo + wdrożenie na Vercel (auto-deploy), własny adres
+✅ Komplet widoków (Start, Projekt, O mnie, Kontakt) w PL i EN
+✅ Projekty **malamut** (z filmem AI) i **salon masażu** (z linkiem do strony klienta)
+✅ Gray Lama ukryta; nowe układy galerii per-projekt
+✅ Obsługa **filmu w galerii** (box na szarym tle) i **aktywnego linku** projektu
 ✅ Galeria prac z hover · spis treści projektu z kotwicami · mockup laptopa + slideshow
 ✅ Reflektor/siatka pod kursorem · przełącznik języka
 
-## 12. Dalsze kroki (roadmapa)
+## 13. Dalsze kroki (roadmapa)
 
-- 🖼️ **Uzupełnianie podstron** realnymi grafikami prac i treścią sekcji (priorytet bieżący).
-- 📷 **Zdjęcie** autora (O mnie) i **CV** (`assets/cv.pdf`).
-- ✉️ **Prawdziwe dane kontaktowe** i linki social.
-- 🖥️ Dodatkowe ramki urządzeń (**przeglądarka**, **telefon**) do innych projektów.
-- 🌐 Opcjonalnie: tryb ciemny, formularz kontaktowy (np. Formspree — bez bazy).
+- 🖼️ Uzupełnianie pozostałych projektów realnymi grafikami i treścią.
+- 🎬 **Kompresja `4.mp4`** (~30 MB) dla szybszego ładowania malamut.
+- 🔗 Opcjonalnie: aktywne linki (`link`) także w innych projektach (np. malamut).
+- 🌐 Opcjonalnie: własna domena, tryb ciemny, formularz kontaktowy (bez bazy).
 - 🧹 Porządki: rozważyć przemianowanie zmiennej `--green` → `--panel` (nazwa historyczna).
 
-## 13. Kryteria akceptacji (skrót)
+## 14. Kryteria akceptacji (skrót)
 
 - [ ] Każdy widok renderuje się poprawnie na desktopie i mobile, bez błędów w konsoli.
-- [ ] Panel ma **identyczne odstępy (48 px)** na wszystkich widokach i jest przyklejony.
-- [ ] Kafelek na home prowadzi do właściwej podstrony projektu; hover zmienia b&w → kolor.
+- [ ] Panel ma spójne odstępy na wszystkich widokach i jest przyklejony.
+- [ ] Kafelek na home prowadzi do właściwej podstrony projektu.
 - [ ] Kotwice kategorii płynnie przewijają treść i podświetlają aktywną sekcję.
-- [ ] Mockup laptopa wyświetla screen; przy ≥ 2 ekranach działa slideshow (kropki, auto-zmiana).
+- [ ] Galeria renderuje właściwy układ per-projekt; film wyświetla się w szarym boxie i działa.
+- [ ] Aktywny link projektu otwiera stronę klienta w nowym oknie.
 - [ ] Przełącznik języka prowadzi do spójnie przetłumaczonych treści.
 - [ ] Efekty animacji są wyłączone przy `prefers-reduced-motion`.
-- [ ] `git push` skutkuje aktualizacją wersji live na Vercelu (osobna domena).
+- [ ] `git push` skutkuje aktualizacją wersji live na Vercelu.
