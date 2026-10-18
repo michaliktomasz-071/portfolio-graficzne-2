@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projekt — Tomasz Michalik</title>
+  <meta name="description" content="Projekt z portfolio Tomasza Michalika — UI / UX Designer.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="project">
+
+  <main class="project-frame">
+
+    <!-- LEWA: zielony panel — przyklejony, tylko prawa strona scrolluje -->
+    <aside class="project-side">
+      <div class="ps-top">
+        <a class="home-btn" id="p-homebtn" href="index.html" aria-label="Strona główna"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9h14v-9"/><path d="M10 19v-5h4v5"/></svg></a>
+        <nav class="ps-projnav" aria-label="Nawigacja między projektami">
+          <a id="pp-prev" href="#" aria-label="Poprzedni projekt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+          <a id="pp-next" href="#" aria-label="Następny projekt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </nav>
+      </div>
+      <a class="ps-home" id="p-home" href="index.html">Tomasz Michalik</a>
+      <h1 class="ps-title" id="p-title">—</h1>
+      <p class="ps-desc" id="p-desc">—</p>
+      <nav class="cat-nav" id="cat-nav" aria-label="Sekcje projektu"></nav>
+    </aside>
+
+    <!-- PRAWA: treść projektu (przewijana) -->
+    <div class="project-content" id="pc">
+      <div class="pc-inner">
+        <div class="proj-cover" id="p-cover"></div>
+        <div id="sections"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/projects.js"></script>
+  <script>
+    (function () {
+      var CATS = [
+        { id: "badania-porownawcze",        pl: "Badania porównawcze",        en: "Comparative research" },
+        { id: "dane-z-systemu",             pl: "Dane z systemu",             en: "System data" },
+        { id: "profile-uzytkownikow",       pl: "Profile użytkowników",       en: "User profiles" },
+        { id: "ux-elements",                pl: "UX elements",                en: "UX elements" },
+        { id: "elementy-ui",                pl: "Elementy UI",                en: "UI elements" },
+        { id: "prace-koncepcyjne",          pl: "Prace koncepcyjne",          en: "Concept work" },
+        { id: "finalne-ekrany",             pl: "Finalne ekrany",             en: "Final screens" },
+        { id: "wnioski-z-analizy-wstepnej", pl: "Wnioski z analizy wstępnej", en: "Initial analysis findings" }
+      ];
+
+      var params = new URLSearchParams(location.search);
+      var lang = params.get("lang") === "en" ? "en" : "pl";
+      var id = parseInt(params.get("id"), 10);
+      var list = window.PROJECTS || [];
+      var idx = list.findIndex(function (p) { return p.id === id; });
+      if (idx === -1) idx = 0;
+      var p = list[idx];
+      if (!p) { location.replace(lang === "en" ? "index-en.html" : "index.html"); return; }
+
+      var T = {
+        pl: { back: "Wszystkie prace", prev: "← Poprzednia", next: "Następna →", ph: "Grafiki i treść — wkrótce" },
+        en: { back: "All work", prev: "← Previous", next: "Next →", ph: "Visuals & content — coming soon" }
+      }[lang];
+
+      function fld(key) { return (lang === "en" && p[key + "_en"]) ? p[key + "_en"] : p[key]; }
+      function set(elId, val) { var e = document.getElementById(elId); if (e) e.textContent = val; }
+
+      document.documentElement.lang = lang;
+      document.title = fld("title") + " — Tomasz Michalik";
+      set("p-title", fld("title")); set("p-desc", fld("desc"));
+
+      // aktywny link do strony projektu (otwiera się w nowym oknie)
+      if (p.link) {
+        var pdesc = document.getElementById("p-desc");
+        var la = document.createElement("a");
+        la.className = "ps-link";
+        la.href = p.link; la.target = "_blank"; la.rel = "noopener noreferrer";
+        la.textContent = (fld("linkLabel") || (lang === "en" ? "Visit the website" : "Zobacz stronę")) + " ↗";
+        if (pdesc) pdesc.insertAdjacentElement("afterend", la);
+      }
+
+      // tryb galerii (np. ruminta): bez slidera/coveru i bez menu kategorii — same grafiki w siatce
+      var galleryMode = !!(p.gallery && p.gallery.length);
+      var cover = document.getElementById("p-cover");
+      if (galleryMode) {
+        document.body.classList.add("gallery-page");
+        cover.style.display = "none";
+        var gal = document.createElement("div"); gal.className = "proj-gallery proj-gallery--" + (p.layout || "ruminta");
+        if (p.layout === "logo") {
+          // kafel = ikona (domyślnie) + logo (po najechaniu); ścieżkę logo wyliczamy z ikony
+          p.gallery.forEach(function (src, i) {
+            var cell = document.createElement("div"); cell.className = "logo-swap";
+            var ico = document.createElement("img"); ico.className = "logo-swap__ico";
+            ico.src = src; ico.alt = ""; ico.loading = i < 8 ? "eager" : "lazy";
+            var lg = document.createElement("img"); lg.className = "logo-swap__logo";
+            lg.src = src.replace("/ikona/", "/logo/"); lg.alt = fld("title") + " — " + (i + 1); lg.loading = i < 8 ? "eager" : "lazy";
+            cell.appendChild(ico); cell.appendChild(lg);
+            gal.appendChild(cell);
+          });
+        } else {
+          p.gallery.forEach(function (src, i) {
+            // film (np. klip social media) — w szarym boxie, wideo wyśrodkowane bez przycięcia
+            if (/\.(mp4|webm|mov|m4v)$/i.test(src)) {
+              var box = document.createElement("div"); box.className = "gal-video";
+              var ph = document.createElement("span"); ph.className = "gal-video__ph";
+              ph.textContent = lang === "en" ? "Video — coming soon" : "Film — wkrótce";
+              var v = document.createElement("video");
+              v.src = src; v.muted = true; v.loop = true; v.autoplay = true; v.controls = true;
+              v.preload = "metadata"; v.setAttribute("playsinline", ""); v.setAttribute("muted", "");
+              v.addEventListener("loadeddata", function () { ph.remove(); });
+              v.addEventListener("error", function () { if (v.parentNode) v.parentNode.removeChild(v); });
+              box.appendChild(ph); box.appendChild(v);
+              gal.appendChild(box);
+              return;
+            }
+            var im = document.createElement("img");
+            im.src = src; im.alt = fld("title") + " — " + (i + 1);
+            im.loading = i < 3 ? "eager" : "lazy";
+            gal.appendChild(im);
+          });
+        }
+        document.getElementById("sections").appendChild(gal);
+        // kwadratowe komórki: wysokość wiersza = szerokość kolumny; liczba wierszy z układu CSS
+        var sizeGal = function () {
+          if (window.matchMedia("(max-width: 860px)").matches) { gal.style.gridTemplateRows = ""; return; }
+          var gap = parseFloat(getComputedStyle(gal).columnGap) || 0;
+          var s = (gal.clientWidth - gap * 2) / 3;
+          var areas = getComputedStyle(gal).gridTemplateAreas || "";
+          var rows = (areas.match(/"[^"]*"/g) || []).length;
+          if (!rows) { gal.style.gridTemplateRows = ""; return; }   // układ jednolity (logo) — wysokość z CSS
+          gal.style.gridTemplateRows = "repeat(" + rows + ", " + s + "px)";
+        };
+        sizeGal();
+        if (window.ResizeObserver) new ResizeObserver(sizeGal).observe(gal);
+        window.addEventListener("resize", sizeGal);
+      } else {
+        // cover: mockup laptopa (ze slideshow ekranów) albo zwykły obraz
+        var screens = (p.screens && p.screens.length) ? p.screens : [p.img];
+        var device = p.device || "laptop";   // laptop domyślnie na każdej podstronie produktu
+        if (device === "phone") {
+          cover.classList.add("proj-cover--device");
+          cover.appendChild(buildPhone(screens, fld("title")));
+        } else if (device === "laptop") {
+          cover.classList.add("proj-cover--device");
+          cover.appendChild(buildLaptop(screens, fld("title")));
+        } else {
+          var im = document.createElement("img"); im.src = p.img; im.alt = fld("title");
+          cover.appendChild(im);
+        }
+      }
+
+      function buildLaptop(srcs, altText) {
+        var lap = document.createElement("div"); lap.className = "laptop";
+        var scr = document.createElement("div"); scr.className = "laptop__screen";
+        var bar = document.createElement("div"); bar.className = "laptop__bar";
+        var bdots = document.createElement("div"); bdots.className = "browser__dots";
+        for (var d = 0; d < 3; d++) bdots.appendChild(document.createElement("span"));
+        var url = document.createElement("div"); url.className = "browser__url";
+        bar.appendChild(bdots); bar.appendChild(url);
+        var view = document.createElement("div"); view.className = "laptop__view";
+        var slides = document.createElement("div"); slides.className = "slides";
+        srcs.forEach(function (src, i) {
+          var im = document.createElement("img"); im.src = src; im.alt = altText;
+          im.loading = i ? "lazy" : "eager";
+          if (i === 0) im.classList.add("is-on");
+          slides.appendChild(im);
+        });
+        view.appendChild(slides);
+        scr.appendChild(bar); scr.appendChild(view);
+        var base = document.createElement("div"); base.className = "laptop__base";
+        var notch = document.createElement("span"); notch.className = "laptop__notch"; base.appendChild(notch);
+        lap.appendChild(scr); lap.appendChild(base);
+
+        if (srcs.length > 1) {
+          var imgs = slides.querySelectorAll("img");
+          var dotsWrap = document.createElement("div"); dotsWrap.className = "laptop__dots";
+          var dots = [];
+          imgs.forEach(function (_, i) {
+            var b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", "Ekran " + (i + 1));
+            if (i === 0) b.classList.add("on");
+            b.addEventListener("click", function () { go(i); start(); });
+            dotsWrap.appendChild(b); dots.push(b);
+          });
+          lap.appendChild(dotsWrap);
+          var cur = 0, timer = null;
+          var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+          function go(n) {
+            imgs[cur].classList.remove("is-on"); dots[cur].classList.remove("on");
+            cur = (n + imgs.length) % imgs.length;
+            imgs[cur].classList.add("is-on"); dots[cur].classList.add("on");
+          }
+          function start() { if (reduce) return; stop(); timer = setInterval(function () { go(cur + 1); }, 3500); }
+          function stop() { if (timer) { clearInterval(timer); timer = null; } }
+          lap.addEventListener("mouseenter", stop);
+          lap.addEventListener("mouseleave", start);
+          start();
+        }
+        return lap;
+      }
+
+      function buildPhone(srcs, altText) {
+        var ph = document.createElement("div"); ph.className = "phone";
+        var scr = document.createElement("div"); scr.className = "phone__screen";
+        var notch = document.createElement("div"); notch.className = "phone__notch";
+        var slides = document.createElement("div"); slides.className = "slides";
+        srcs.forEach(function (src, i) {
+          var im = document.createElement("img"); im.src = src; im.alt = altText;
+          im.loading = i ? "lazy" : "eager";
+          if (i === 0) im.classList.add("is-on");
+          slides.appendChild(im);
+        });
+        scr.appendChild(notch); scr.appendChild(slides);
+        ph.appendChild(scr);
+
+        if (srcs.length > 1) {
+          var imgs = slides.querySelectorAll("img");
+          var dotsWrap = document.createElement("div"); dotsWrap.className = "laptop__dots";
+          var dots = [];
+          imgs.forEach(function (_, i) {
+            var b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", "Ekran " + (i + 1));
+            if (i === 0) b.classList.add("on");
+            b.addEventListener("click", function () { go(i); start(); });
+            dotsWrap.appendChild(b); dots.push(b);
+          });
+          ph.appendChild(dotsWrap);
+          var cur = 0, timer = null;
+          var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+          function go(n) {
+            imgs[cur].classList.remove("is-on"); dots[cur].classList.remove("on");
+            cur = (n + imgs.length) % imgs.length;
+            imgs[cur].classList.add("is-on"); dots[cur].classList.add("on");
+          }
+          function start() { if (reduce) return; stop(); timer = setInterval(function () { go(cur + 1); }, 3500); }
+          function stop() { if (timer) { clearInterval(timer); timer = null; } }
+          ph.addEventListener("mouseenter", stop);
+          ph.addEventListener("mouseleave", start);
+          start();
+        }
+        return ph;
+      }
+
+      var suffix = lang === "en" ? "&lang=en" : "";
+      var homeHref = lang === "en" ? "index-en.html" : "index.html";
+      document.getElementById("p-home").href = homeHref;
+      var hb = document.getElementById("p-homebtn"); if (hb) hb.href = homeHref;
+
+      var prev = list[(idx - 1 + list.length) % list.length];
+      var next = list[(idx + 1) % list.length];
+      var pv = document.getElementById("pp-prev"), nx = document.getElementById("pp-next");
+      pv.href = "praca.html?id=" + prev.id + suffix;
+      nx.href = "praca.html?id=" + next.id + suffix;
+      pv.setAttribute("aria-label", lang === "en" ? "Previous project" : "Poprzedni projekt");
+      nx.setAttribute("aria-label", lang === "en" ? "Next project" : "Następny projekt");
+
+      // menu kategorii (kotwice) + sekcje — pomijane w trybie galerii
+      var nav = document.getElementById("cat-nav");
+      var sections = document.getElementById("sections");
+      if (!galleryMode) CATS.forEach(function (c) {
+        var label = c[lang];
+        var a = document.createElement("a");
+        a.href = "#" + c.id; a.textContent = label; a.dataset.target = c.id;
+        nav.appendChild(a);
+
+        var sec = document.createElement("section");
+        sec.className = "proj-section"; sec.id = c.id;
+        var h = document.createElement("h2"); h.textContent = label;
+        var ph = document.createElement("div"); ph.className = "proj-section__ph"; ph.textContent = "[ " + T.ph + " ]";
+        sec.appendChild(h); sec.appendChild(ph);
+        sections.appendChild(sec);
+      });
+
+      // płynne przewijanie wewnątrz prawej kolumny
+      var pc = document.getElementById("pc");
+      nav.addEventListener("click", function (e) {
+        var a = e.target.closest("a"); if (!a) return;
+        e.preventDefault();
+        var el = document.getElementById(a.dataset.target);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      // podświetlenie aktywnej kategorii
+      var links = {};
+      [].forEach.call(nav.querySelectorAll("a"), function (a) { links[a.dataset.target] = a; });
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) {
+              [].forEach.call(nav.querySelectorAll("a"), function (a) { a.classList.remove("active"); });
+              var act = links[en.target.id]; if (act) act.classList.add("active");
+            }
+          });
+        }, { root: pc, rootMargin: "0px 0px -70% 0px", threshold: 0 });
+        [].forEach.call(sections.querySelectorAll(".proj-section"), function (s) { io.observe(s); });
+      }
+    })();
+  </script>
+</body>
+</html>

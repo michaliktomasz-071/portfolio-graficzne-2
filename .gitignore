@@ -1,0 +1,16 @@
+# System / edytory
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/
+
+# Vercel
+.vercel/
+
+# Źródła graficzne (nie na web)
+*.psd
+
+# Luźne / robocze pliki
+images/salon-masazu/n i w.jpg
