@@ -1,6 +1,6 @@
 # PRD — Portfolio graficzne 2 (Tomasz Michalik)
 
-**Dokument wymagań produktowych** · wersja 2.0 · status: live (uzupełnianie projektów)
+**Dokument wymagań produktowych** · wersja 2.1 · status: live (uzupełnianie projektów)
 Repo: https://github.com/michaliktomasz-071/portfolio-graficzne-2 · Live: https://portfolio-graficzne-2.vercel.app/
 
 > Projekt jest **klonem** `portfolio-graficzne` (które samo jest kopią portfolio UI/UX, repo
@@ -89,6 +89,11 @@ Wspólne zasoby: `css/styles.css`, `js/main.js`, `js/projects.js`, `favicon.svg`
   jako `<video>` w **szarym boxie** (`.gal-video`, `object-fit: contain` — klip pod social media
   bez przycinania, z szarymi marginesami). Autoodtwarzanie, wyciszony, w pętli, `playsinline`,
   z kontrolkami. Gdy pliku brak — box pokazuje etykietę „Film — wkrótce" (obsłużony błąd).
+- **Ukrywanie projektów:** `praca.html` filtruje listę przez `!p.hidden`, więc projekt z flagą
+  `hidden: true` w `projects.js` znika z nawigacji prev/next, a bezpośredni URL `?id=N` robi
+  fallback na pierwszy widoczny projekt. Do pełnego ukrycia dochodzi usunięcie kafelka ze strony
+  głównej (PL + EN). Dane projektu zostają w pliku — odwracalne (usuń flagę + przywróć kafelek).
+  Starszy wariant (Gray Lama) ukryto przez **zakomentowanie** wpisu — oba sposoby współistnieją.
 
 ### 6.3 O mnie / Kontakt
 - `o-mnie.*`: lewy panel (menu, tagi umiejętności, fakty) + prawa kolumna (zdjęcie + bio).
@@ -104,24 +109,35 @@ Wspólne zasoby: `css/styles.css`, `js/main.js`, `js/projects.js`, `favicon.svg`
 Każdy projekt: `id`, `img` (miniatura), `year`, `layout`, `gallery[]` lub tryb cover,
 dwujęzyczne `title/tag/role/klient/desc` (+ `*_en`), opcjonalnie `link` + `linkLabel(_en)`.
 
+Kolejność w pliku ≠ kolejność id — kafelki na stronie głównej i nawigacja biorą projekty
+z tablicy w kolejności jej zapisu.
+
 | id | Projekt | Tag | Tryb / układ | Uwagi |
 |---|---|---|---|---|
 | 1 | ruminta | Identyfikacja wizualna | galeria `ruminta` | 14 grafik |
 | 2 | trans.eu | Materiały targowe i DTP | galeria `trans` | 12 kafli + baner |
 | 3 | PITD | Raporty i publikacje | galeria `pitd` | 15 grafik |
-| 4 | ~~Gray Lama~~ | — | — | **UKRYTY** (zakomentowany w `projects.js`, brak kafelka) |
+| 4 | ~~Gray Lama~~ | — | — | **UKRYTY** (zakomentowany wpis, brak kafelka) |
 | 7 | **malamut** | Social media i film AI | galeria `malamut` (6 el.) | **film** w boxie #4; klej polimerowy |
-| 8 | **salon masażu** | Identyfikacja i strona www | galeria `salon` | **link** do masazbartoszburcon.pl |
-| 5 | VetAnima | Identyfikacja i opakowania | galeria `vetanima` | 12 grafik |
-| 6 | Logotypy | Projektowanie logo | galeria `logo` (bento) | kafel ikona→logo na hover |
+| 8 | **salon masażu** | Identyfikacja i strona www | galeria `salon` (6 el.) | **link** do masazbartoszburcon.pl |
+| 9 | ~~eneon~~ | Identyfikacja i strona www | galeria `eneon` (5 el.) | **UKRYTY** (flaga `hidden`) |
+| 10 | **podnośnik koszowy** | Identyfikacja i one-pager | galeria `podnosnik` (5 el.) | marka BOCIEK (wynajem podnośników, Wrocław) |
+| 5 | ~~VetAnima~~ | Identyfikacja i opakowania | galeria `vetanima` | **UKRYTY** (flaga `hidden`) |
+| 6 | Logotypy | Projektowanie logo | galeria `logo` (bento) | **24 kafle**, ikona→logo na hover |
 
 - **malamut** — kampania social media kleju polimerowego: film reklamowy (narzędzia AI) +
-  posty/grafiki. Układ 6 kafli (jak początek `trans`): #1/#2 w słupku, #3 i film (#4) jako duże
-  pola 2×2, #5/#6 mniejsze.
+  posty/grafiki. Na potrzeby kampanii stworzono bohatera marki (pies-budowlaniec / złota rączka)
+  jako spójną bazę wizualną dla materiałów AI. Układ 6 kafli (jak początek `trans`): #1/#2
+  w słupku, #3 i film (#4) jako duże pola 2×2, #5/#6 mniejsze.
 - **salon masażu** — identyfikacja studia masażu Bartosz Burcon: logo, materiały drukowane,
-  strona www (przygotowana z użyciem AI). Układ: #1 (logo) + #2 (voucher) + #7 (ulotki) jako
-  małe kwadraty w lewej kolumnie; sekcje strony www (#3–#5) jako jednolita kolumna dociągnięta
-  do prawej krawędzi. Aktywny link „Zobacz stronę ↗".
+  strona www (z użyciem AI). Układ: #1 (logo) + #2 (voucher) + #7 (ulotki) jako małe kwadraty
+  w lewej kolumnie; sekcje strony www (#3–#5) jako kolumna dociągnięta do prawej. Aktywny link.
+- **eneon** *(ukryty)* — identyfikacja i strona www firmy z branży inteligentnej energetyki
+  (logo, opakowania, branding, mockupy strony). Układ `eneon` (klon salon, 5 el.).
+- **podnośnik koszowy** — identyfikacja marki **BOCIEK** (wynajem podnośników koszowych):
+  logo, materiały drukowane (ulotki) i serwis www w formie **one-pagera**. Układ `podnosnik`
+  (klon salon, 5 el.): #1/#2 małe kwadraty (logo, ulotki), #3 duży (hero), #4/#5 pełna szerokość
+  (sekcje strony). Źródła `*.psd` trzymane w folderze (gitignore).
 
 ## 8. Dwujęzyczność (PL / EN)
 
@@ -131,9 +147,10 @@ dwujęzyczne `title/tag/role/klient/desc` (+ `*_en`), opcjonalnie `link` + `link
 
 ## 9. Zasoby graficzne
 
-- `images/<projekt>/` — miniatura + grafiki galerii (np. `images/malamut/`, `images/salon-masazu/`).
+- `images/<projekt>/` — miniatura + grafiki galerii (np. `images/malamut/`, `images/salon-masazu/`,
+  `images/eneon/`, `images/podnosnik-koszowy/`, `images/logo/ikona/` + `images/logo/logo/`).
 - Film: `images/malamut/4.mp4` (klip pionowy 9:16, ~30 MB — kandydat do kompresji).
-- Źródła `*.psd` i pliki robocze: w `.gitignore`, nie publikowane.
+- Źródła `*.psd` i pliki robocze: w `.gitignore`, nie publikowane (np. `podnosnik-koszowy/*.psd`).
 - `assets/` — CV (`CV Tomasz Michalik.pdf`).
 
 ## 10. Dostępność i wydajność
@@ -150,20 +167,26 @@ dwujęzyczne `title/tag/role/klient/desc` (+ `*_en`), opcjonalnie `link` + `link
 - **Każdy `git push` do `main` = automatyczny re-deploy.**
 - `vercel.json` → `cleanUrls` (adresy bez `.html`).
 - Live: https://portfolio-graficzne-2.vercel.app/ (opcjonalnie: własna domena w Settings → Domains).
+- ⚠️ **Znany problem:** Vercel bywa, że **pomija deploy** niektórych commitów. Przyczyna:
+  Settings → Build and Deployment → Root Directory → **„Skip deployments when there are no changes
+  to the root directory"** = Enabled. Zalecane: **wyłączyć** tę opcję (wtedy każdy push się wdraża).
+  Doraźny workaround: pusty commit re-trigger (`git commit --allow-empty` + push).
 
 ## 12. Status — co już działa
 
 ✅ Osobne publiczne repo + wdrożenie na Vercel (auto-deploy), własny adres
 ✅ Komplet widoków (Start, Projekt, O mnie, Kontakt) w PL i EN
-✅ Projekty **malamut** (z filmem AI) i **salon masażu** (z linkiem do strony klienta)
-✅ Gray Lama ukryta; nowe układy galerii per-projekt
+✅ Projekty **malamut** (film AI), **salon masażu** (link) i **podnośnik koszowy / BOCIEK** (one-pager)
+✅ Mechanizm ukrywania projektów (flaga `hidden` + filtr): ukryte Gray Lama, VetAnima, eneon
+✅ Nowe układy galerii per-projekt (klony: `malamut`, `salon`, `eneon`, `podnosnik`); logo = 24 kafle
 ✅ Obsługa **filmu w galerii** (box na szarym tle) i **aktywnego linku** projektu
 ✅ Galeria prac z hover · spis treści projektu z kotwicami · mockup laptopa + slideshow
 ✅ Reflektor/siatka pod kursorem · przełącznik języka
 
 ## 13. Dalsze kroki (roadmapa)
 
-- 🖼️ Uzupełnianie pozostałych projektów realnymi grafikami i treścią.
+- 🖼️ Uzupełnianie projektów realnymi grafikami (np. podnośnik koszowy #6 — jest `6.psd`).
+- ⚙️ **Wyłączyć na Vercelu** „Skip deployments when there are no changes…" (sekcja 11).
 - 🎬 **Kompresja `4.mp4`** (~30 MB) dla szybszego ładowania malamut.
 - 🔗 Opcjonalnie: aktywne linki (`link`) także w innych projektach (np. malamut).
 - 🌐 Opcjonalnie: własna domena, tryb ciemny, formularz kontaktowy (bez bazy).

@@ -47,7 +47,7 @@ window.PROJECTS = [
     desc: "Przygotowanie kompleksowej identyfikacji wizualnej oraz serwisu internetowego dla firmy eneon, działającej w obszarze inteligentnej energetyki. Projekt obejmował opracowanie logo, materiałów brandingowych, opakowań i druków firmowych oraz zaprojektowanie strony internetowej prezentującej ofertę i produkty marki. Całość buduje spójny, nowoczesny wizerunek łączący ekologię z technologią.",
     desc_en: "Development of a complete visual identity and website for eneon, a company operating in the field of intelligent energy. The project covered logo design, branding materials, packaging and corporate print, as well as a website presenting the brand's offer and products. Together it builds a consistent, modern image combining ecology with technology." },
   { id: 10, img: "images/podnosnik-koszowy/miniatura.jpg", year: "2026", layout: "podnosnik",
-    gallery: ["images/podnosnik-koszowy/1.jpg", "images/podnosnik-koszowy/2.jpg", "images/podnosnik-koszowy/3.jpg", "images/podnosnik-koszowy/4.jpg", "images/podnosnik-koszowy/5.jpg"],
+    gallery: ["images/podnosnik-koszowy/1.jpg", "images/podnosnik-koszowy/2.jpg", "images/podnosnik-koszowy/3.jpg", "images/podnosnik-koszowy/4.jpg"],
     title: "podnośnik koszowy",   tag: "Identyfikacja i one-pager", role: "Branding, DTP, Web", klient: "BOCIEK",
     title_en: "aerial work platform",      tag_en: "Brand identity & one-pager", role_en: "Branding, DTP, Web", klient_en: "BOCIEK",
     desc: "Projekt identyfikacji wizualnej dla firmy BOCIEK (wynajem podnośników koszowych) — obejmujący logo, materiały drukowane oraz serwis internetowy w formie one-pagera. Całość buduje spójny, rozpoznawalny wizerunek marki, łącząc energetyczną kolorystykę z czytelnym, nowoczesnym layoutem.",
