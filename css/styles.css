@@ -578,7 +578,7 @@ body.gallery-page .pc-inner { padding: 0 var(--ga) var(--ga); }   /* góra 0 —
   color: #9a9a9a; font-weight: 500; letter-spacing: 2px; font-size: 14px;
 }
 /* układ "logo" — bento (23 kafle); kafel = ikona, po najechaniu zamienia się w logo */
-.proj-gallery--logo { grid-template-columns: repeat(3, 1fr); }
+.proj-gallery--logo { grid-template-columns: repeat(4, 1fr); }
 .proj-gallery--logo > .logo-swap { position: relative; aspect-ratio: 1 / 1; background: #fff; border: 1px solid var(--line); overflow: hidden; }
 .proj-gallery--logo > .logo-swap img {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;
