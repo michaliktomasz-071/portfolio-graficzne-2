@@ -1,6 +1,6 @@
 # Minimalny statyczny serwer HTTP dla portfolio (czysty PowerShell, bez zależności).
 $ErrorActionPreference = "Stop"
-$port = 4323
+$port = if ($env:PORT) { [int]$env:PORT } else { 4327 }
 $root = $PSScriptRoot
 
 $types = @{

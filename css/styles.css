@@ -279,7 +279,7 @@ body.home {
 }
 .home-frame {
   height: 100%;
-  background: linear-gradient(140deg, #EEF1F6 0%, #E5E9EE 55%, #DCE2E9 100%);  /* subtelny chłodny gradient */
+  background: linear-gradient(140deg, #D6DFEE 0%, #E1E7F0 55%, #EAEDF1 100%);  /* subtelny gradient: od lekkiego niebieskiego do szarego */
   display: grid;
   grid-template-columns: 1fr clamp(340px, 38%, 560px);
   grid-template-rows: minmax(0, 1fr);   /* wiersz wypełnia panel → nav na dole, galeria scrolluje */
@@ -405,7 +405,7 @@ body.home, body.project, body.about {
   grid-template-rows: minmax(0, 1fr); gap: clamp(20px, 2.5vw, 48px);
 }
 .project-side {
-  background: linear-gradient(160deg, #EEF1F6 0%, #E5E9EE 55%, #DCE2E9 100%); color: var(--fg);
+  background: linear-gradient(160deg, #D6DFEE 0%, #E1E7F0 55%, #EAEDF1 100%); color: var(--fg);
   padding: clamp(32px, 2.6vw, 48px);
   display: flex; flex-direction: column; min-height: 0; overflow: hidden;
   border-radius: var(--radius);
@@ -535,8 +535,10 @@ body.gallery-page .pc-inner { padding: 0 var(--ga) var(--ga); }   /* góra 0 —
     "p8  p9  p9"
     "p10 p10 p11"
     "p10 p10 p12"
-    "p13 p13 p14"
-    "p13 p13 p15";
+    "p14 p13 p13"
+    "p15 p13 p13"
+    "p16 p16 p17"
+    "p16 p16 p18";
 }
 /* układ "graylama" — 15 grafik */
 .proj-gallery--graylama {
@@ -686,6 +688,9 @@ body.gallery-page .pc-inner { padding: 0 var(--ga) var(--ga); }   /* góra 0 —
 .proj-gallery--pitd > img:nth-child(13) { grid-area: p13; }
 .proj-gallery--pitd > img:nth-child(14) { grid-area: p14; }
 .proj-gallery--pitd > img:nth-child(15) { grid-area: p15; }
+.proj-gallery--pitd > img:nth-child(16) { grid-area: p16; }
+.proj-gallery--pitd > img:nth-child(17) { grid-area: p17; }
+.proj-gallery--pitd > img:nth-child(18) { grid-area: p18; }
 .proj-gallery--graylama > img:nth-child(1)  { grid-area: l1;  }
 .proj-gallery--graylama > img:nth-child(2)  { grid-area: l2;  }
 .proj-gallery--graylama > img:nth-child(3)  { grid-area: l3;  }
