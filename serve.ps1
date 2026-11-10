@@ -32,6 +32,8 @@ while ($listener.IsListening) {
     $urlPath = [System.Uri]::UnescapeDataString($req.Url.AbsolutePath)
     if ($urlPath -eq "/") { $urlPath = "/index.html" }
     $relative = $urlPath.TrimStart("/")
+    # ładne adresy projektów: /praca-<id> -> praca.html (zgodnie z vercel.json)
+    if ($relative -match '^praca-\d+$') { $relative = "praca.html" }
     $filePath = Join-Path $root $relative
     $full = [System.IO.Path]::GetFullPath($filePath)
 

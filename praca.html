@@ -56,7 +56,9 @@
 
       var params = new URLSearchParams(location.search);
       var lang = params.get("lang") === "en" ? "en" : "pl";
-      var id = parseInt(params.get("id"), 10);
+      // id ze „ładnego” adresu /praca-<id> (dla analityki per-projekt), fallback do ?id=
+      var pathMatch = location.pathname.match(/praca-(\d+)/);
+      var id = pathMatch ? parseInt(pathMatch[1], 10) : parseInt(params.get("id"), 10);
       var list = (window.PROJECTS || []).filter(function (p) { return !p.hidden; });
       var idx = list.findIndex(function (p) { return p.id === id; });
       if (idx === -1) idx = 0;
@@ -245,7 +247,7 @@
         return ph;
       }
 
-      var suffix = lang === "en" ? "&lang=en" : "";
+      var suffix = lang === "en" ? "?lang=en" : "";
       var homeHref = lang === "en" ? "index-en.html" : "index.html";
       document.getElementById("p-home").href = homeHref;
       var hb = document.getElementById("p-homebtn"); if (hb) hb.href = homeHref;
@@ -253,8 +255,8 @@
       var prev = list[(idx - 1 + list.length) % list.length];
       var next = list[(idx + 1) % list.length];
       var pv = document.getElementById("pp-prev"), nx = document.getElementById("pp-next");
-      pv.href = "praca.html?id=" + prev.id + suffix;
-      nx.href = "praca.html?id=" + next.id + suffix;
+      pv.href = "praca-" + prev.id + suffix;
+      nx.href = "praca-" + next.id + suffix;
       pv.setAttribute("aria-label", lang === "en" ? "Previous project" : "Poprzedni projekt");
       nx.setAttribute("aria-label", lang === "en" ? "Next project" : "Następny projekt");
 
