@@ -1,6 +1,6 @@
 # PRD — Portfolio graficzne 2 (Tomasz Michalik)
 
-**Dokument wymagań produktowych** · wersja 2.1 · status: live (uzupełnianie projektów)
+**Dokument wymagań produktowych** · wersja 2.2 · status: live (uzupełnianie projektów)
 Repo: https://github.com/michaliktomasz-071/portfolio-graficzne-2 · Live: https://portfolio-graficzne-2.vercel.app/
 
 > Projekt jest **klonem** `portfolio-graficzne` (które samo jest kopią portfolio UI/UX, repo
@@ -24,8 +24,9 @@ klientów. Strona jest wizytówką — prosta w utrzymaniu, edytowalna bezpośre
   Node.js/npm). Pierwsze załadowanie wymaga internetu (fonty z Google Fonts; potem cache).
 - **Dwujęzyczność** PL / EN.
 - **Hosting:** GitHub (źródło) → Vercel (auto-deploy po `git push`), własny adres.
-- **Estetyka:** minimalizm, „surowy" charakter — **brak zaokrągleń**, jasny błękitno-szary
-  panel, delikatna siatka „papier milimetrowy", font Plus Jakarta Sans, dużo whitespace'u.
+- **Estetyka:** minimalizm — **lekkie zaokrąglenia** (`--radius: 10px`), **płaski jasny szary
+  panel** (`#E5E5E6`), delikatna siatka „papier milimetrowy", font **Space Grotesk**, dużo
+  whitespace'u. Typografia i tło **spójne z portfolio UI/UX** (repo `portfolio`).
 - **Źródła graficzne poza repo:** pliki `*.psd` i robocze są w `.gitignore` (nie trafiają na web).
 
 ## 3. Stos technologiczny
@@ -35,8 +36,8 @@ klientów. Strona jest wizytówką — prosta w utrzymaniu, edytowalna bezpośre
 | Frontend | HTML + CSS + vanilla JS (bez frameworka, bez builda) |
 | Animacje | CSS transitions/keyframes + IntersectionObserver + `requestAnimationFrame` |
 | Dane projektów | `js/projects.js` (`window.PROJECTS`, dwujęzyczne) |
-| Typografia | Plus Jakarta Sans (Google Fonts) |
-| Hosting | Vercel (statyczny), `vercel.json` → `cleanUrls` |
+| Typografia | Space Grotesk (Google Fonts) |
+| Hosting | Vercel (statyczny), `vercel.json` → rewrite `/praca-<id>`; **Vercel Web Analytics** |
 | Podgląd lokalny | `serve.ps1` (serwer statyczny w PowerShell, **port 4323**) |
 | Wersjonowanie | Git/GitHub; `.gitattributes` chroni pliki binarne; `.gitignore` wyklucza `*.psd` |
 
@@ -46,7 +47,7 @@ klientów. Strona jest wizytówką — prosta w utrzymaniu, edytowalna bezpośre
 |---|---|---|
 | `index.html` | Start (hero + galeria prac) | PL |
 | `index-en.html` | Home | EN |
-| `praca.html?id=N[&lang=en]` | Podstrona projektu (1 szablon, dane z `projects.js`) | PL/EN |
+| `praca-N[?lang=en]` (rewrite) / `praca.html?id=N` | Podstrona projektu (1 szablon, dane z `projects.js`) | PL/EN |
 | `o-mnie.html` / `o-mnie-en.html` | O mnie / About | PL/EN |
 | `kontakt.html` / `kontakt-en.html` | Kontakt / Contact | PL/EN |
 
@@ -55,16 +56,18 @@ Wspólne zasoby: `css/styles.css`, `js/main.js`, `js/projects.js`, `favicon.svg`
 
 ## 5. System projektowy (design system)
 
-- **Kolory** jako zmienne CSS w `:root`: `--bg`, `--green` (**#D7DCE5** — kolor panelu; nazwa
-  historyczna, trzyma błękitno-szary), `--fg`, `--muted`, `--line`, `--card`, `--page`.
-  Zmiana motywu = jedna zmienna.
+- **Kolory** jako zmienne CSS w `:root`: `--bg`, `--green` (**#E5E5E6** — płaski jasny szary
+  panel; nazwa historyczna), `--fg`, `--muted`, `--line`, `--card`, `--page`.
+  Zmiana motywu = jedna zmienna. Panele (`.home-frame`, `.project-side`) mają **płaskie tło**
+  (bez gradientu), spójne z portfolio UI/UX.
 - **Siatka tła** („papier milimetrowy"): subtelne linie/kropki na białym tle; na panelu
-  dodatkowo biała siatka odsłaniana pod kursorem (ślad z bezwładnością).
-- **Brak zaokrągleń** (surowy charakter) — dotyczy też przycisków i tagów.
+  dodatkowo siatka odsłaniana pod kursorem (ślad z bezwładnością).
+- **Lekkie zaokrąglenia** (`--radius: 10px`): panele, kafle galerii, przyciski, tagi, zdjęcia
+  (ikony/FAB `.home-btn` 10px, ikony kontaktu 7px).
 - **Układ bazowy (wszystkie widoki):** pełny ekran, ramka dookoła, **panel po lewej**
   (przyklejony) + **treść po prawej** (przewija się tylko prawa kolumna). Na mobile (≤ 860 px)
   układ przechodzi w jedną kolumnę i normalne przewijanie.
-- **Font:** Plus Jakarta Sans (wagi 300–800).
+- **Font:** Space Grotesk (wagi 300–700, Google Fonts).
 
 ## 6. Funkcjonalności
 
@@ -73,7 +76,7 @@ Wspólne zasoby: `css/styles.css`, `js/main.js`, `js/projects.js`, `favicon.svg`
   „Tomasz Michalik", krótki wstęp, na dole nawigacja **O mnie / Kontakt / Pobierz CV**.
 - Prawa kolumna: **pionowa galeria kafelków** prac (przewijana wewnątrz).
 - Kafelek: miniatura + tytuł + podpis (tag) + **„Zobacz więcej"**; klik → podstrona projektu
-  (`praca.html?id=N`). Jeden kafelek jest linkiem zewnętrznym do portfolio UI/UX.
+  pod **ładnym adresem** `praca-N` (rewrite z `vercel.json`; stary `praca.html?id=N` nadal działa).
 
 ### 6.2 Podstrona projektu (`praca.html`)
 - Lewy panel jako **spis treści projektu**: nawigacja poprzednia/następna, „Tomasz Michalik"
@@ -116,7 +119,7 @@ z tablicy w kolejności jej zapisu.
 |---|---|---|---|---|
 | 1 | ruminta | Identyfikacja wizualna | galeria `ruminta` | 14 grafik |
 | 2 | trans.eu | Materiały targowe i DTP | galeria `trans` | 12 kafli + baner |
-| 3 | PITD | Raporty i publikacje | galeria `pitd` | 15 grafik |
+| 3 | PITD | Raporty i publikacje | galeria `pitd` | 18 grafik (układ przebudowany, pasma 13–18) |
 | 4 | ~~Gray Lama~~ | — | — | **UKRYTY** (zakomentowany wpis, brak kafelka) |
 | 7 | **malamut** | Social media i film AI | galeria `malamut` (6 el.) | **film** w boxie #4; klej polimerowy |
 | 8 | **salon masażu** | Identyfikacja i strona www | galeria `salon` (6 el.) | **link** do masazbartoszburcon.pl |
@@ -165,7 +168,11 @@ z tablicy w kolejności jej zapisu.
 
 - Repo GitHub (publiczne) `portfolio-graficzne-2` → Vercel (framework „Other", katalog `/`).
 - **Każdy `git push` do `main` = automatyczny re-deploy.**
-- `vercel.json` → `cleanUrls` (adresy bez `.html`).
+- `vercel.json` → **rewrite** `/praca-:id` → `/praca.html?id=:id` (ładne adresy projektów
+  `praca-N`). `praca.html` czyta `id` ze ścieżki, z fallbackiem do `?id=` (wsteczna zgodność).
+- **Analityka: Vercel Web Analytics** (plan Hobby, darmowy) — skrypt `/_vercel/insights/script.js`
+  na wszystkich podstronach. Dzięki ładnym adresom `praca-N` raport **Pages** zlicza **każdy
+  projekt osobno** (które prace są najczęściej otwierane), bez custom events (te są tylko w Pro).
 - Live: https://portfolio-graficzne-2.vercel.app/ (opcjonalnie: własna domena w Settings → Domains).
 - ⚠️ **Znany problem:** Vercel bywa, że **pomija deploy** niektórych commitów. Przyczyna:
   Settings → Build and Deployment → Root Directory → **„Skip deployments when there are no changes
@@ -182,6 +189,8 @@ z tablicy w kolejności jej zapisu.
 ✅ Obsługa **filmu w galerii** (box na szarym tle) i **aktywnego linku** projektu
 ✅ Galeria prac z hover · spis treści projektu z kotwicami · mockup laptopa + slideshow
 ✅ Reflektor/siatka pod kursorem · przełącznik języka
+✅ **Spójna typografia i tło z portfolio UI/UX** (Space Grotesk, płaski panel `#E5E5E6`, zaokrąglenia)
+✅ **Ładne adresy** `praca-N` (rewrite) + **Vercel Web Analytics** — zliczanie otwarć per projekt
 
 ## 13. Dalsze kroki (roadmapa)
 

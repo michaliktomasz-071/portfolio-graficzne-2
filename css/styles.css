@@ -14,15 +14,15 @@
   --accent:    #333333;
   --accent-fg: #ffffff;
 
-  --green:     #E5E9EE;   /* kolor tła panelu — jasny chłodny szary */
+  --green:     #E5E5E6;   /* kolor tła panelu — płaski jasny szary (jak w portfolio UI/UX) */
   --frame:     48px;      /* ramka dookoła hero */
 
   --maxw: 1180px;
   --gutter: clamp(20px, 5vw, 64px);
   --radius: 10px;   /* lekkie zaokrąglenia krawędzi */
 
-  --font-body: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-head: "Plus Jakarta Sans", var(--font-body);
+  --font-body: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-head: "Space Grotesk", var(--font-body);
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 0.6s;
@@ -279,7 +279,7 @@ body.home {
 }
 .home-frame {
   height: 100%;
-  background: linear-gradient(140deg, #D6DFEE 0%, #E1E7F0 55%, #EAEDF1 100%);  /* subtelny gradient: od lekkiego niebieskiego do szarego */
+  background: var(--green);  /* płaskie tło (jak w portfolio UI/UX) */
   display: grid;
   grid-template-columns: 1fr clamp(340px, 38%, 560px);
   grid-template-rows: minmax(0, 1fr);   /* wiersz wypełnia panel → nav na dole, galeria scrolluje */
@@ -313,7 +313,7 @@ body.home {
   font-size: clamp(3.4rem, 11vw, 140px); line-height: 0.95; letter-spacing: -0.03em;
   margin: 0.1em 0 0.14em;
 }
-.hero-role { font-size: 24px; font-weight: 400; }
+.hero-role { font-size: clamp(17px, 1.9vw, 24px); font-weight: 400; line-height: 1.5; }
 .hero-nav { display: flex; flex-direction: column; gap: 6px; align-self: end; }
 .hero-nav a {
   width: max-content; font-size: clamp(1.2rem, 2.2vw, 1.6rem); font-weight: 500;
@@ -405,7 +405,7 @@ body.home, body.project, body.about {
   grid-template-rows: minmax(0, 1fr); gap: clamp(20px, 2.5vw, 48px);
 }
 .project-side {
-  background: linear-gradient(160deg, #D6DFEE 0%, #E1E7F0 55%, #EAEDF1 100%); color: var(--fg);
+  background: var(--green); color: var(--fg);
   padding: clamp(32px, 2.6vw, 48px);
   display: flex; flex-direction: column; min-height: 0; overflow: hidden;
   border-radius: var(--radius);
